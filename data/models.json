@@ -1,0 +1,157 @@
+{
+  "_comment": "Ollama models are fetched from the Ollama API, so they are not included here.",
+  "chatModels": {
+    "openai": [
+      {
+        "displayName": "GPT-3.5 Turbo",
+        "key": "gpt-3.5-turbo"
+      },
+      {
+        "displayName": "GPT-4",
+        "key": "gpt-4"
+      },
+      {
+        "displayName": "GPT-4 Turbo",
+        "key": "gpt-4-turbo"
+      },
+      {
+        "displayName": "GPT-4 Omni",
+        "key": "gpt-4o"
+      },
+      {
+        "displayName": "GPT-4 Omni Mini",
+        "key": "gpt-4o-mini"
+      }
+    ],
+    "groq": [
+      {
+        "displayName": "Gemma2 9B IT",
+        "key": "gemma2-9b-it"
+      },
+      {
+        "displayName": "Llama 3.3 70B Versatile",
+        "key": "llama-3.3-70b-versatile"
+      },
+      {
+        "displayName": "Llama 3.1 8B Instant",
+        "key": "llama-3.1-8b-instant"
+      },
+      {
+        "displayName": "Llama3 70B 8192",
+        "key": "llama3-70b-8192"
+      },
+      {
+        "displayName": "Llama3 8B 8192",
+        "key": "llama3-8b-8192"
+      },
+      {
+        "displayName": "Mixtral 8x7B 32768",
+        "key": "mixtral-8x7b-32768"
+      },
+      {
+        "displayName": "Qwen QWQ 32B (Preview)",
+        "key": "qwen-qwq-32b"
+      },
+      {
+        "displayName": "Mistral Saba 24B (Preview)",
+        "key": "mistral-saba-24b"
+      },
+      {
+        "displayName": "DeepSeek R1 Distill Llama 70B (Preview)",
+        "key": "deepseek-r1-distill-llama-70b"
+      }
+    ],
+    "gemini": [
+      {
+        "displayName": "Gemini 2.5 Pro Experimental",
+        "key": "gemini-2.5-pro-exp-03-25"
+      },
+      {
+        "displayName": "Gemini 2.0 Flash",
+        "key": "gemini-2.0-flash"
+      },
+      {
+        "displayName": "Gemini 2.0 Flash-Lite",
+        "key": "gemini-2.0-flash-lite"
+      },
+      {
+        "displayName": "Gemini 2.0 Flash Thinking Experimental",
+        "key": "gemini-2.0-flash-thinking-exp-01-21"
+      },
+      {
+        "displayName": "Gemini 1.5 Flash",
+        "key": "gemini-1.5-flash"
+      },
+      {
+        "displayName": "Gemini 1.5 Flash-8B",
+        "key": "gemini-1.5-flash-8b"
+      },
+      {
+        "displayName": "Gemini 1.5 Pro",
+        "key": "gemini-1.5-pro"
+      }
+    ],
+    "anthropic": [
+      {
+        "displayName": "Claude 3.7 Sonnet",
+        "key": "claude-3-7-sonnet-20250219"
+      },
+      {
+        "displayName": "Claude 3.5 Haiku",
+        "key": "claude-3-5-haiku-20241022"
+      },
+      {
+        "displayName": "Claude 3.5 Sonnet v2",
+        "key": "claude-3-5-sonnet-20241022"
+      },
+      {
+        "displayName": "Claude 3.5 Sonnet",
+        "key": "claude-3-5-sonnet-20240620"
+      },
+      {
+        "displayName": "Claude 3 Opus",
+        "key": "claude-3-opus-20240229"
+      },
+      {
+        "displayName": "Claude 3 Sonnet",
+        "key": "claude-3-sonnet-20240229"
+      },
+      {
+        "displayName": "Claude 3 Haiku",
+        "key": "claude-3-haiku-20240307"
+      }
+    ]
+  },
+  "embeddingModels": {
+    "openai": [
+      {
+        "displayName": "Text Embedding 3 Large",
+        "key": "text-embedding-3-large"
+      },
+      {
+        "displayName": "Text Embedding 3 Small",
+        "key": "text-embedding-3-small"
+      }
+    ],
+    "gemini": [
+      {
+        "displayName": "Gemini Embedding",
+        "key": "gemini-embedding-exp"
+      }
+    ],
+    "transformers": [
+      {
+        "displayName": "BGE Small",
+        "key": "xenova-bge-small-en-v1.5"
+      },
+      {
+        "displayName": "GTE Small",
+        "key": "xenova-gte-small"
+      },
+      {
+        "displayName": "Bert Multilingual",
+        "key": "xenova-bert-base-multilingual-uncased"
+      }
+    ]
+  }
+}

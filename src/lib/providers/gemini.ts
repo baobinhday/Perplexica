@@ -3,57 +3,24 @@ import {
   GoogleGenerativeAIEmbeddings,
 } from '@langchain/google-genai';
 import { getGeminiApiKey } from '../config';
-import { ChatModel, EmbeddingModel } from '.';
+import { ChatModel, EmbeddingModel, getModelsList, RawModel } from '.';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { Embeddings } from '@langchain/core/embeddings';
 
-const geminiChatModels: Record<string, string>[] = [
-  {
-    displayName: 'Gemini 2.5 Pro Experimental',
-    key: 'gemini-2.5-pro-exp-03-25',
-  },
-  {
-    displayName: 'Gemini 2.0 Flash',
-    key: 'gemini-2.0-flash',
-  },
-  {
-    displayName: 'Gemini 2.0 Flash-Lite',
-    key: 'gemini-2.0-flash-lite',
-  },
-  {
-    displayName: 'Gemini 2.0 Flash Thinking Experimental',
-    key: 'gemini-2.0-flash-thinking-exp-01-21',
-  },
-  {
-    displayName: 'Gemini 1.5 Flash',
-    key: 'gemini-1.5-flash',
-  },
-  {
-    displayName: 'Gemini 1.5 Flash-8B',
-    key: 'gemini-1.5-flash-8b',
-  },
-  {
-    displayName: 'Gemini 1.5 Pro',
-    key: 'gemini-1.5-pro',
-  },
-];
-
-const geminiEmbeddingModels: Record<string, string>[] = [
-  {
-    displayName: 'Gemini Embedding',
-    key: 'gemini-embedding-exp',
-  },
-];
+const loadModels = (modelType: 'chat' | 'embedding') => {
+  return getModelsList()?.[modelType === 'chat' ? 'chatModels' : 'embeddingModels']['gemini']  as unknown as RawModel[]
+}
 
 export const loadGeminiChatModels = async () => {
   const geminiApiKey = getGeminiApiKey();
-
   if (!geminiApiKey) return {};
+
+  const models = loadModels('chat');
 
   try {
     const chatModels: Record<string, ChatModel> = {};
 
-    geminiChatModels.forEach((model) => {
+    models.forEach((model) => {
       chatModels[model.key] = {
         displayName: model.displayName,
         model: new ChatGoogleGenerativeAI({
@@ -73,13 +40,14 @@ export const loadGeminiChatModels = async () => {
 
 export const loadGeminiEmbeddingModels = async () => {
   const geminiApiKey = getGeminiApiKey();
-
   if (!geminiApiKey) return {};
+
+  const models = loadModels('embedding');
 
   try {
     const embeddingModels: Record<string, EmbeddingModel> = {};
 
-    geminiEmbeddingModels.forEach((model) => {
+    models.forEach((model) => {
       embeddingModels[model.key] = {
         displayName: model.displayName,
         model: new GoogleGenerativeAIEmbeddings({

@@ -1,52 +1,23 @@
 import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
 import { getOpenaiApiKey } from '../config';
-import { ChatModel, EmbeddingModel } from '.';
+import { ChatModel, EmbeddingModel, getModelsList, RawModel } from '.';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { Embeddings } from '@langchain/core/embeddings';
 
-const openaiChatModels: Record<string, string>[] = [
-  {
-    displayName: 'GPT-3.5 Turbo',
-    key: 'gpt-3.5-turbo',
-  },
-  {
-    displayName: 'GPT-4',
-    key: 'gpt-4',
-  },
-  {
-    displayName: 'GPT-4 turbo',
-    key: 'gpt-4-turbo',
-  },
-  {
-    displayName: 'GPT-4 omni',
-    key: 'gpt-4o',
-  },
-  {
-    displayName: 'GPT-4 omni mini',
-    key: 'gpt-4o-mini',
-  },
-];
-
-const openaiEmbeddingModels: Record<string, string>[] = [
-  {
-    displayName: 'Text Embedding 3 Small',
-    key: 'text-embedding-3-small',
-  },
-  {
-    displayName: 'Text Embedding 3 Large',
-    key: 'text-embedding-3-large',
-  },
-];
+const loadModels = (modelType: 'chat' | 'embedding') => {
+  return getModelsList()?.[modelType === 'chat' ? 'chatModels' : 'embeddingModels']['openai']  as unknown as RawModel[]
+}
 
 export const loadOpenAIChatModels = async () => {
   const openaiApiKey = getOpenaiApiKey();
+  const models = loadModels('chat');
 
-  if (!openaiApiKey) return {};
+  if (!openaiApiKey || !models) return {};
 
   try {
     const chatModels: Record<string, ChatModel> = {};
 
-    openaiChatModels.forEach((model) => {
+    models.forEach((model) => {
       chatModels[model.key] = {
         displayName: model.displayName,
         model: new ChatOpenAI({
@@ -66,13 +37,14 @@ export const loadOpenAIChatModels = async () => {
 
 export const loadOpenAIEmbeddingModels = async () => {
   const openaiApiKey = getOpenaiApiKey();
+  const models = loadModels('embedding');
 
-  if (!openaiApiKey) return {};
+  if (!openaiApiKey || !models) return {};
 
   try {
     const embeddingModels: Record<string, EmbeddingModel> = {};
 
-    openaiEmbeddingModels.forEach((model) => {
+    models.forEach((model) => {
       embeddingModels[model.key] = {
         displayName: model.displayName,
         model: new OpenAIEmbeddings({
