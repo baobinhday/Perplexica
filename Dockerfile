@@ -84,7 +84,7 @@ CMD ["node", "server.js"]
 
 
 # Set the entrypoint to use a shell
-ENTRYPOINT [ "/bin/sh", "-c" ]
+#ENTRYPOINT [ "/bin/sh", "-c" ]
 
 # Run SearXNG in the background and start the Node.js application using PM2
-CMD [ "(/usr/local/searxng/dockerfiles/docker-entrypoint.sh -f > /dev/null 2>&1)" ]
+#CMD [ "(/usr/local/searxng/dockerfiles/docker-entrypoint.sh -f > /dev/null 2>&1)" ]
