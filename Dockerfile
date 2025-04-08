@@ -80,7 +80,11 @@ COPY --from=builder /home/perplexica/data ./data
 
 RUN mkdir /home/perplexica/uploads
 
-#CMD ["node", "server.js"]
+CMD ["node", "server.js"]
+
+
+# Set the entrypoint to use a shell
+ENTRYPOINT [ "/bin/sh", "-c" ]
 
 # Run SearXNG in the background and start the Node.js application using PM2
-CMD [ "(/usr/local/searxng/dockerfiles/docker-entrypoint.sh -f > /dev/null 2>&1) & (node server.js)" ]
+CMD [ "(/usr/local/searxng/dockerfiles/docker-entrypoint.sh -f > /dev/null 2>&1) & (npx pm2 start ecosystem.config.cjs && npx pm2 logs production-server)" ]
