@@ -26,4 +26,4 @@ API_URL = "" # Ollama API URL - http://host.docker.internal:11434
 API_KEY = ""
 
 [API_ENDPOINTS]
-SEARXNG = "" # SearxNG API URL - http://localhost:32768
+SEARXNG = "http://localhost:32768" # SearxNG API URL - http://localhost:32768
