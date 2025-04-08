@@ -1,23 +1,3 @@
-# Build llama.cpp in a separate stage
-FROM alpine:3.21 AS llama-builder
-
-# Install build dependencies
-RUN apk add --update \
-  build-base \
-  cmake \
-  ccache \
-  git \
-  curl
-
-# Build llama.cpp server and collect libraries
-RUN cd /tmp && \
-  git clone https://github.com/ggerganov/llama.cpp.git --depth=1 && \
-  cd llama.cpp && \
-  cmake -B build -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF && \
-  cmake --build build --config Release -j --target llama-server && \
-  mkdir -p /usr/local/lib/llama && \
-  find build -type f \( -name "libllama.so" -o -name "libggml.so" -o -name "libggml-base.so" -o -name "libggml-cpu.so" \) -exec cp {} /usr/local/lib/llama/ \;
-
 # Use the SearXNG image as the base for final image
 FROM searxng/searxng:2025.4.7-b146b745a
 
@@ -34,11 +14,6 @@ RUN apk add --update \
   git \
   build-base
 
-# Copy llama.cpp artifacts from builder
-COPY --from=llama-builder /tmp/llama.cpp/build/bin/llama-server /usr/local/bin/
-COPY --from=llama-builder /usr/local/lib/llama/* /usr/local/lib/
-RUN ldconfig /usr/local/lib
-
 # Set the SearXNG settings folder path
 ARG SEARXNG_SETTINGS_FOLDER=/etc/searxng
 
@@ -54,7 +29,6 @@ RUN sed -i 's/- html/- json/' /usr/local/searxng/searx/settings.yml \
 
 
 ####
-FROM node:20.18.0-slim AS builder
 
 WORKDIR /home/perplexica
 
@@ -69,7 +43,6 @@ COPY public ./public
 RUN mkdir -p /home/perplexica/data
 RUN yarn build
 
-FROM node:20.18.0-slim
 
 WORKDIR /home/perplexica
 
