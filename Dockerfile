@@ -22,7 +22,7 @@ RUN cd /tmp && \
 FROM searxng/searxng:2025.4.7-b146b745a
 
 # Set the default port to 7860 if not provided
-ENV PORT=7860
+ENV PORT=3000
 
 # Expose the port specified by the PORT environment variable
 EXPOSE $PORT
