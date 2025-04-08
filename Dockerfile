@@ -61,7 +61,8 @@ WORKDIR /home/perplexica
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --network-timeout 600000
 
-COPY tsconfig.json next.config.mjs next-env.d.ts postcss.config.js drizzle.config.ts config.toml tailwind.config.ts ./
+COPY tsconfig.json next.config.mjs next-env.d.ts postcss.config.js drizzle.config.ts tailwind.config.ts ./
+COPY sample.config.toml ./config.toml
 COPY src ./src
 COPY public ./public
 
