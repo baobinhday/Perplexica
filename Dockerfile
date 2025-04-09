@@ -29,8 +29,21 @@ RUN sed -i 's/- html/- json/' /usr/local/searxng/searx/settings.yml \
 
 
 ####
+# Set up user and directory structure
+ARG USERNAME=perplexica
+ARG HOME_DIR=/home/${USERNAME}
+ARG APP_DIR=${HOME_DIR}/app
 
-WORKDIR /home/perplexica
+# Create a non-root user and set up the application directory
+RUN adduser -D -u 1000 ${USERNAME} \
+  && mkdir -p ${APP_DIR} \
+  && chown -R ${USERNAME}:${USERNAME} ${HOME_DIR}
+
+# Switch to the non-root user
+USER ${USERNAME}
+
+# Set the working directory to the application directory
+WORKDIR ${APP_DIR}
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --network-timeout 600000
