@@ -36,7 +36,6 @@ ARG APP_DIR=${HOME_DIR}/app
 
 # Create a non-root user and set up the application directory
 RUN adduser -D -u 1000 ${USERNAME} \
-  && mkdir -p ${APP_DIR} \
   && chown -R ${USERNAME}:${USERNAME} ${HOME_DIR}
 
 # Switch to the non-root user
