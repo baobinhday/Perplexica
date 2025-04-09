@@ -9,7 +9,7 @@ out/
 dist/
 
 # IDE/Editor specific
-.vscode/
+#.vscode/
 .idea/
 *.iml
 
