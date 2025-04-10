@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import db from "@/lib/db/index";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import bcrypt from "bcrypt";
 
 // Handler for creating a new user
 export async function POST(req: Request) {
@@ -29,11 +30,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create new user
+    // Hash password with bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Create new user with hashed password
     const newUser = await db.insert(users).values({
       username,
       name,
-      password, // In a real application, this should be hashed
+      password: hashedPassword,
     }).returning();
 
     return NextResponse.json(newUser[0], { status: 201 });

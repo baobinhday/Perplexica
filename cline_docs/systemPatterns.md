@@ -24,6 +24,14 @@
 - Database schema management with Drizzle
 - User management system with relational database design
 
+### Authentication System
+- JWT-based authentication with access and refresh tokens
+- Password hashing using bcrypt for secure storage
+- Token refresh mechanism for extended sessions
+- Protected routes with authentication middleware
+- User session management
+- Secure password reset flow
+
 ### Search System
 - Meta search agent architecture
 - Specialized agents for different content types:
@@ -56,3 +64,5 @@
 - Type-safe database operations
 - Server-side rendering for optimal performance
 - Relational database design for user-chat associations
+- Secure authentication with token rotation
+- Password security with salted hashing

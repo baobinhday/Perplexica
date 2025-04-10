@@ -8,6 +8,8 @@ This appears to be a sophisticated chat and search application built with Next.j
 - Enables search across multiple sources (images, videos, academic content)
 - Offers file attachment and management capabilities
 - Supports multiple AI providers (Anthropic, OpenAI, Gemini, Groq, etc.)
+- Manages user authentication and authorization securely
+- Handles user data and preferences persistently
 
 ## Intended Functionality
 - Chat conversations with AI models
@@ -17,3 +19,9 @@ This appears to be a sophisticated chat and search application built with Next.j
 - Settings management
 - Library organization
 - Discovery features
+- User authentication and account management
+  - Secure login with JWT tokens
+  - Password hashing for security
+  - User profile management
+  - Session handling with refresh tokens
+  - Self-service user operations (create, update, delete)
