@@ -1,14 +1,17 @@
 # Active Context
 
 ## Current Work
-- Initial documentation setup
-- Creating Memory Bank files to establish project context
+- Developing CRUD APIs for user management
+- Updating Memory Bank documentation to reflect recent changes
 
 ## Recent Changes
 - Created productContext.md with initial project overview
-- Setting up remaining Memory Bank documentation
+- Created API routes for user management:
+  - src/app/api/users/route.ts for creating and listing users (POST, GET)
+  - src/app/api/users/[id]/route.ts for operations on specific users (GET, PUT, DELETE)
+- Corrected database import in user API routes to resolve TypeScript errors
 
 ## Next Steps
-- Create remaining Memory Bank files (systemPatterns.md, techContext.md, progress.md)
-- Review project structure in detail
-- Document key technical patterns and architecture
+- Verify functionality of user CRUD APIs through testing
+- Update progress.md to include user API development as a completed component
+- Await user feedback or additional requirements for further development
