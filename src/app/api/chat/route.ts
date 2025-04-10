@@ -143,6 +143,7 @@ const handleHistorySave = async (
       .insert(chats)
       .values({
         id: message.chatId,
+        userId: 1, // Default to admin user ID
         title: message.content,
         createdAt: new Date().toString(),
         focusMode: focusMode,

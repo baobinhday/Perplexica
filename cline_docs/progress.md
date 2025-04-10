@@ -8,7 +8,7 @@
 - Search capabilities (images, videos, web)
 - File upload system
 - Theme switching
-- Database integration
+- Database integration with user association for chats
 - API routes for core functionality
 
 ## What's Left to Build
@@ -23,7 +23,7 @@
 - UI components
 - Theme system
 - File handling
-- Database schema
+- Database schema with user management
 - API routes
 
 ### In Progress
@@ -46,3 +46,4 @@
   - systemPatterns.md
   - techContext.md
   - progress.md (this file)
+- Updated documentation to reflect database schema changes and user association

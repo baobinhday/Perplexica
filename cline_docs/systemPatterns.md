@@ -5,6 +5,7 @@
 - API Routes for backend functionality
 - Component-based UI structure
 - Database integration using Drizzle ORM
+- User association with chats for personalized chat management
 
 ## Key Technical Patterns
 
@@ -21,6 +22,7 @@
 - Multiple AI provider integrations
 - Output parser system for standardizing responses
 - Database schema management with Drizzle
+- User management system with relational database design
 
 ### Search System
 - Meta search agent architecture
@@ -53,3 +55,4 @@
 - Extensible search architecture
 - Type-safe database operations
 - Server-side rendering for optimal performance
+- Relational database design for user-chat associations

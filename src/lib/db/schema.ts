@@ -19,10 +19,20 @@ interface File {
 
 export const chats = sqliteTable('chats', {
   id: text('id').primaryKey(),
+  userId: integer('userId')
+    .notNull()
+    .references(() => users.id),
   title: text('title').notNull(),
   createdAt: text('createdAt').notNull(),
   focusMode: text('focusMode').notNull(),
   files: text('files', { mode: 'json' })
     .$type<File[]>()
     .default(sql`'[]'`),
+});
+
+export const users = sqliteTable('users', {
+  id: integer('id').primaryKey(),
+  username: text('username').unique(),
+  name: text('name').notNull(),
+  password: text('password').notNull(),
 });

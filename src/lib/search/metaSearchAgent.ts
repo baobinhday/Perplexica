@@ -217,7 +217,7 @@ class MetaSearchAgent implements MetaSearchAgentType {
                   result.content ||
                   (this.config.activeEngines.includes('youtube')
                     ? result.title
-                    : '') /* Todo: Implement transcript grabbing using Youtubei (source: https://www.npmjs.com/package/youtubei) */,
+                    : '') /* Todo: Implement transcript grabbing using Youtube (source: https://www.npmjs.com/package/youtubei) */,
                 metadata: {
                   title: result.title,
                   url: result.url,
