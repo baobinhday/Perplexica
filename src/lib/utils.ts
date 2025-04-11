@@ -1,7 +1,9 @@
-import clsx, { ClassValue } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export const cn = (...classes: ClassValue[]) => twMerge(clsx(...classes));
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const formatTimeDifference = (
   date1: Date | string,
