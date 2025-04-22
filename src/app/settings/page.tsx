@@ -37,7 +37,7 @@ const Input = ({ className, isSaving, onSave, ...restProps }: InputProps) => {
       <input
         {...restProps}
         className={cn(
-          'bg-light-secondary dark:bg-dark-secondary w-full px-3 py-2 flex items-center overflow-hidden border border-light-200 dark:border-dark-200 dark:text-white rounded-lg text-sm',
+          'bg-secondary dark:bg-dark-secondary w-full px-3 py-2 flex items-center overflow-hidden border border-light-200 dark:border-dark-200 dark:text-white rounded-lg text-sm',
           isSaving && 'pr-10',
           className,
         )}
@@ -70,7 +70,7 @@ const Textarea = ({
     <div className="relative">
       <textarea
         placeholder="Any special instructions for the LLM"
-        className="placeholder:text-sm text-sm w-full flex items-center justify-between p-3 bg-light-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors"
+        className="placeholder:text-sm text-sm w-full flex items-center justify-between p-3 bg-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors"
         rows={4}
         onBlur={(e) => onSave?.(e.target.value)}
         {...restProps}
@@ -98,7 +98,7 @@ const Select = ({
     <select
       {...restProps}
       className={cn(
-        'bg-light-secondary dark:bg-dark-secondary px-3 py-2 flex items-center overflow-hidden border border-light-200 dark:border-dark-200 dark:text-white rounded-lg text-sm',
+        'bg-secondary dark:bg-dark-secondary px-3 py-2 flex items-center overflow-hidden border border-light-200 dark:border-dark-200 dark:text-white rounded-lg text-sm',
         className,
       )}
     >
@@ -118,7 +118,7 @@ const SettingsSection = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <div className="flex flex-col space-y-4 p-4 bg-light-secondary/50 dark:bg-dark-secondary/50 rounded-xl border border-light-200 dark:border-dark-200">
+  <div className="flex flex-col space-y-4 p-4 bg-secondary/50 dark:bg-dark-secondary/50 rounded-xl border border-light-200 dark:border-dark-200">
     <h2 className="text-black/90 dark:text-white/90 font-medium">{title}</h2>
     {children}
   </div>
@@ -425,7 +425,7 @@ const Page = () => {
 
             <SettingsSection title="Automatic Search">
               <div className="flex flex-col space-y-4">
-                <div className="flex items-center justify-between p-3 bg-light-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
+                <div className="flex items-center justify-between p-3 bg-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-light-200 dark:bg-dark-200 rounded-lg">
                       <ImagesIcon
@@ -467,7 +467,7 @@ const Page = () => {
                   </Switch>
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-light-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
+                <div className="flex items-center justify-between p-3 bg-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-light-200 dark:bg-dark-200 rounded-lg">
                       <VideoIcon

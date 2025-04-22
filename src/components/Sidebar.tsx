@@ -47,7 +47,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-20 lg:flex-col">
-        <div className="flex grow flex-col items-center justify-between gap-y-5 overflow-y-auto bg-light-secondary dark:bg-dark-secondary px-2 py-8">
+        <div className="flex grow flex-col items-center justify-between gap-y-5 overflow-y-auto bg-card px-2 py-8">
           <a href="/">
             <SquarePen className="cursor-pointer" />
           </a>
@@ -83,7 +83,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 w-full z-50 flex flex-row items-center gap-x-6 bg-light-primary dark:bg-dark-primary px-4 py-4 shadow-sm lg:hidden">
+      <div className="fixed bottom-0 w-full z-50 flex flex-row items-center gap-x-6 bg-primary px-4 py-4 shadow-sm lg:hidden">
         {navLinks.map((link, i) => (
           <Link
             href={link.href}

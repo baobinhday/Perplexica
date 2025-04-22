@@ -85,7 +85,7 @@ const SearchImages = ({
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-light-secondary dark:bg-dark-secondary h-32 w-full rounded-lg animate-pulse aspect-video object-cover"
+              className="bg-secondary dark:bg-dark-secondary h-32 w-full rounded-lg animate-pulse aspect-video object-cover"
             />
           ))}
         </div>

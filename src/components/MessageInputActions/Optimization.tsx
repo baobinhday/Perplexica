@@ -45,7 +45,7 @@ const Optimization = ({
     <Popover className="relative w-full max-w-[15rem] md:max-w-md lg:max-w-lg">
       <PopoverButton
         type="button"
-        className="p-2 text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white"
+        className="p-2 text-black/50 dark:text-white/50 rounded-xl hover:bg-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white"
       >
         <div className="flex flex-row items-center space-x-1">
           {
@@ -71,7 +71,7 @@ const Optimization = ({
         leaveTo="opacity-0 translate-y-1"
       >
         <PopoverPanel className="absolute z-10 w-64 md:w-[250px] right-0">
-          <div className="flex flex-col gap-2 bg-light-primary dark:bg-dark-primary border rounded-lg border-light-200 dark:border-dark-200 w-full p-4 max-h-[200px] md:max-h-none overflow-y-auto">
+          <div className="flex flex-col gap-2 bg-primary border rounded-lg border-light-200 dark:border-dark-200 w-full p-4 max-h-[200px] md:max-h-none overflow-y-auto">
             {OptimizationModes.map((mode, i) => (
               <PopoverButton
                 onClick={() => setOptimizationMode(mode.key)}
@@ -80,8 +80,8 @@ const Optimization = ({
                 className={cn(
                   'p-2 rounded-lg flex flex-col items-start justify-start text-start space-y-1 duration-200 cursor-pointer transition',
                   optimizationMode === mode.key
-                    ? 'bg-light-secondary dark:bg-dark-secondary'
-                    : 'hover:bg-light-secondary dark:hover:bg-dark-secondary',
+                    ? 'bg-secondary dark:bg-dark-secondary'
+                    : 'hover:bg-secondary dark:hover:bg-dark-secondary',
                   mode.key === 'quality' && 'opacity-50 cursor-not-allowed',
                 )}
               >

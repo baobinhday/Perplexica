@@ -6,6 +6,7 @@ import Attach from './MessageInputActions/Attach';
 import CopilotToggle from './MessageInputActions/Copilot';
 import { File } from './ChatWindow';
 import AttachSmall from './MessageInputActions/AttachSmall';
+import { Button } from './ui/button';
 
 const MessageInput = ({
   sendMessage,
@@ -75,7 +76,7 @@ const MessageInput = ({
         }
       }}
       className={cn(
-        'bg-light-secondary dark:bg-dark-secondary p-4 flex items-center overflow-hidden border border-light-200 dark:border-dark-200',
+        'bg-secondary dark:bg-dark-secondary p-4 flex items-center overflow-hidden border border-light-200 dark:border-dark-200',
         mode === 'multi' ? 'flex-col rounded-lg' : 'flex-row rounded-full',
       )}
     >
@@ -103,12 +104,12 @@ const MessageInput = ({
             copilotEnabled={copilotEnabled}
             setCopilotEnabled={setCopilotEnabled}
           />
-          <button
+          <Button
             disabled={message.trim().length === 0 || loading}
-            className="bg-[#24A0ED] text-white disabled:text-black/50 dark:disabled:text-white/50 hover:bg-opacity-85 transition duration-100 disabled:bg-[#e0e0dc79] dark:disabled:bg-[#ececec21] rounded-full p-2"
+            className="rounded-full p-2 size-8 transition duration-200"
           >
-            <ArrowUp className="bg-background" size={17} />
-          </button>
+            <ArrowUp size={17} />
+          </Button>
         </div>
       )}
       {mode === 'multi' && (

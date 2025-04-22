@@ -65,7 +65,7 @@ const Attach = ({
       <PopoverButton
         type="button"
         className={cn(
-          'flex flex-row items-center justify-between space-x-1 p-2 text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white',
+          'flex flex-row items-center justify-between space-x-1 p-2 text-black/50 dark:text-white/50 rounded-xl hover:bg-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white',
           files.length > 0 ? '-ml-2 lg:-ml-3' : '',
         )}
       >
@@ -101,7 +101,7 @@ const Attach = ({
         leaveTo="opacity-0 translate-y-1"
       >
         <PopoverPanel className="absolute z-10 w-64 md:w-[350px] right-0">
-          <div className="bg-light-primary dark:bg-dark-primary border rounded-md border-light-200 dark:border-dark-200 w-full max-h-[200px] md:max-h-none overflow-y-auto flex flex-col">
+          <div className="bg-primary border rounded-md border-light-200 dark:border-dark-200 w-full max-h-[200px] md:max-h-none overflow-y-auto flex flex-col">
             <div className="flex flex-row items-center justify-between px-3 py-2">
               <h4 className="text-black dark:text-white font-medium text-sm">
                 Attached files
@@ -164,7 +164,7 @@ const Attach = ({
       type="button"
       onClick={() => fileInputRef.current.click()}
       className={cn(
-        'flex flex-row items-center space-x-1 text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary transition duration-200 hover:text-black dark:hover:text-white',
+        'flex flex-row items-center space-x-1 text-black/50 dark:text-white/50 rounded-xl hover:bg-secondary dark:hover:bg-dark-secondary transition duration-200 hover:text-black dark:hover:text-white',
         showText ? '' : 'p-2',
       )}
     >
