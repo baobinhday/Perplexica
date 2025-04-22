@@ -15,6 +15,8 @@ import { toast } from 'sonner';
 import { Chat } from '@/app/library/page';
 import { Button } from './ui/button';
 import { LoadingSpinner } from './ui/loading-spinner';
+import { isAuthenticatedClient } from '@/lib/utils/storage';
+import { deleteChatFromLocalStorage } from '@/lib/utils/storage';
 
 const DeleteChat = ({
   chatId,
@@ -35,19 +37,28 @@ const DeleteChat = ({
     }
     setLoading(true);
     try {
-      const res = await fetch(`/api/chats/${chatId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Check if user is authenticated
+      const isAuthenticated = isAuthenticatedClient();
 
-      if (res.status != 200) {
-        throw new Error('Failed to delete chat');
+      if (isAuthenticated) {
+        // Delete from database via API
+        const res = await fetch(`/api/chats/${chatId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.status != 200) {
+          throw new Error('Failed to delete chat');
+        }
+      } else {
+        // Delete from localStorage
+        deleteChatFromLocalStorage(chatId);
       }
 
+      // Update UI
       const newChats = chats.filter((chat) => chat.id !== chatId);
-
       setChats(newChats);
 
       if (redirect) {

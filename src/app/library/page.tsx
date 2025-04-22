@@ -5,6 +5,7 @@ import { cn, formatTimeDifference } from '@/lib/utils';
 import { BookOpenText, ClockIcon, Delete, ScanEye } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { isAuthenticatedClient, getChatsFromLocalStorage } from '@/lib/utils/storage';
 
 export interface Chat {
   id: string;
@@ -21,16 +22,36 @@ const Page = () => {
     const fetchChats = async () => {
       setLoading(true);
 
-      const res = await fetch(`/api/chats`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Check if user is authenticated
+      const isAuthenticated = isAuthenticatedClient();
 
-      const data = await res.json();
+      if (isAuthenticated) {
+        // Get chats from database via API
+        const res = await fetch(`/api/chats`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-      setChats(data.chats);
+        const data = await res.json();
+
+        setChats(data.chats);
+      } else {
+        // Get chats from localStorage
+        const localChats = getChatsFromLocalStorage();
+
+        // Convert to Chat interface format
+        const formattedChats = localChats.map(chat => ({
+          id: chat.id,
+          title: chat.title,
+          createdAt: chat.createdAt,
+          focusMode: chat.focusMode
+        }));
+
+        setChats(formattedChats);
+      }
+
       setLoading(false);
     };
 

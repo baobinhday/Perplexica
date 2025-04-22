@@ -12,6 +12,7 @@ import { getSuggestions } from '@/lib/actions';
 import { Settings } from 'lucide-react';
 import Link from 'next/link';
 import NextError from 'next/error';
+import { isAuthenticatedClient, getChatFromLocalStorage, saveMessageToLocalStorage } from '@/lib/utils/storage';
 
 export type Message = {
   messageId: string;
@@ -189,6 +190,58 @@ const loadMessages = async (
   setFiles: (files: File[]) => void,
   setFileIds: (fileIds: string[]) => void,
 ) => {
+  // Check if user is authenticated
+  const isAuthenticated = isAuthenticatedClient();
+
+  // If not authenticated, try to load from localStorage first
+  if (!isAuthenticated) {
+    const localChat = getChatFromLocalStorage(chatId);
+
+    if (localChat) {
+      // Convert localStorage messages to the Message format
+      const messages = localChat.messages.map((msg) => {
+        const metadata = JSON.parse(msg.metadata);
+        return {
+          messageId: msg.messageId,
+          chatId: msg.chatId,
+          content: msg.content,
+          role: msg.role,
+          createdAt: metadata.createdAt ? new Date(metadata.createdAt) : new Date(),
+          sources: metadata.sources,
+        };
+      }) as Message[];
+
+      setMessages(messages);
+
+      const history = messages.map((msg) => {
+        return [msg.role, msg.content];
+      }) as [string, string][];
+
+      console.debug(new Date(), 'app:messages_loaded_from_localStorage');
+
+      if (messages.length > 0) {
+        document.title = messages[0].content;
+      }
+
+      const files = localChat.files.map((file) => {
+        return {
+          fileName: file.name,
+          fileExtension: file.name.split('.').pop() || '',
+          fileId: file.fileId,
+        };
+      });
+
+      setFiles(files);
+      setFileIds(files.map((file) => file.fileId));
+
+      setChatHistory(history);
+      setFocusMode(localChat.focusMode);
+      setIsMessagesLoaded(true);
+      return;
+    }
+  }
+
+  // If authenticated or not found in localStorage, try to load from server
   const res = await fetch(`/api/chats/${chatId}`, {
     method: 'GET',
     headers: {
@@ -408,6 +461,16 @@ const ChatWindow = ({ id }: { id?: string }) => {
 
         recievedMessage += data.data;
         setMessageAppeared(true);
+      }
+
+      if (data.type === 'clientStorage') {
+        // Store message in localStorage for non-authenticated users
+        saveMessageToLocalStorage(
+          data.message,
+          data.message.chatId,
+          data.focusMode,
+          data.files || []
+        );
       }
 
       if (data.type === 'messageEnd') {

@@ -4,8 +4,6 @@ import crypto from 'crypto';
 import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
 import { EventEmitter } from 'stream';
 import {
-  chatModelProviders,
-  embeddingModelProviders,
   getAvailableChatModelProviders,
   getAvailableEmbeddingModelProviders,
 } from '@/lib/providers';
@@ -21,6 +19,7 @@ import {
   getCustomOpenaiModelName,
 } from '@/lib/config';
 import { searchHandlers } from '@/lib/search';
+import { isAuthenticated } from '@/lib/utils/auth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -58,6 +57,8 @@ const handleEmitterEvents = async (
   encoder: TextEncoder,
   aiMessageId: string,
   chatId: string,
+  isUserAuthenticated: boolean,
+  focusMode: string,
 ) => {
   let recievedMessage = '';
   let sources: any[] = [];
@@ -101,18 +102,42 @@ const handleEmitterEvents = async (
     );
     writer.close();
 
-    db.insert(messagesSchema)
-      .values({
-        content: recievedMessage,
-        chatId: chatId,
-        messageId: aiMessageId,
-        role: 'assistant',
-        metadata: JSON.stringify({
-          createdAt: new Date(),
-          ...(sources && sources.length > 0 && { sources }),
-        }),
-      })
-      .execute();
+    // Create the message object
+    const assistantMessage = {
+      messageId: aiMessageId,
+      chatId: chatId,
+      content: recievedMessage,
+      role: 'assistant' as const,
+      createdAt: new Date(),
+      sources: sources && sources.length > 0 ? sources : undefined
+    };
+
+    // If user is authenticated, save to database
+    if (isUserAuthenticated) {
+      db.insert(messagesSchema)
+        .values({
+          content: recievedMessage,
+          chatId: chatId,
+          messageId: aiMessageId,
+          role: 'assistant',
+          metadata: JSON.stringify({
+            createdAt: new Date(),
+            ...(sources && sources.length > 0 && { sources }),
+          }),
+        })
+        .execute();
+    } else {
+      // For client-side storage, we'll add a script tag that will be executed on the client
+      writer.write(
+        encoder.encode(
+          JSON.stringify({
+            type: 'clientStorage',
+            message: assistantMessage,
+            focusMode: focusMode,
+          }) + '\n',
+        ),
+      );
+    }
   });
   stream.on('error', (data) => {
     const parsedData = JSON.parse(data);
@@ -133,59 +158,68 @@ const handleHistorySave = async (
   humanMessageId: string,
   focusMode: string,
   files: string[],
+  isUserAuthenticated: boolean,
 ) => {
-  const chat = await db.query.chats.findFirst({
-    where: eq(chats.id, message.chatId),
-  });
+  // If user is authenticated, save to database
+  if (isUserAuthenticated) {
+    const chat = await db.query.chats.findFirst({
+      where: eq(chats.id, message.chatId),
+    });
 
-  if (!chat) {
-    await db
-      .insert(chats)
-      .values({
-        id: message.chatId,
-        userId: 1, // Default to admin user ID
-        title: message.content,
-        createdAt: new Date().toString(),
-        focusMode: focusMode,
-        files: files.map(getFileDetails),
-      })
-      .execute();
+    if (!chat) {
+      await db
+        .insert(chats)
+        .values({
+          id: message.chatId,
+          userId: 1, // Default to admin user ID
+          title: message.content,
+          createdAt: new Date().toString(),
+          focusMode: focusMode,
+          files: files.map(getFileDetails),
+        })
+        .execute();
+    }
+
+    const messageExists = await db.query.messages.findFirst({
+      where: eq(messagesSchema.messageId, humanMessageId),
+    });
+
+    if (!messageExists) {
+      await db
+        .insert(messagesSchema)
+        .values({
+          content: message.content,
+          chatId: message.chatId,
+          messageId: humanMessageId,
+          role: 'user',
+          metadata: JSON.stringify({
+            createdAt: new Date(),
+          }),
+        })
+        .execute();
+    } else {
+      await db
+        .delete(messagesSchema)
+        .where(
+          and(
+            gt(messagesSchema.id, messageExists.id),
+            eq(messagesSchema.chatId, message.chatId),
+          ),
+        )
+        .execute();
+    }
   }
-
-  const messageExists = await db.query.messages.findFirst({
-    where: eq(messagesSchema.messageId, humanMessageId),
-  });
-
-  if (!messageExists) {
-    await db
-      .insert(messagesSchema)
-      .values({
-        content: message.content,
-        chatId: message.chatId,
-        messageId: humanMessageId,
-        role: 'user',
-        metadata: JSON.stringify({
-          createdAt: new Date(),
-        }),
-      })
-      .execute();
-  } else {
-    await db
-      .delete(messagesSchema)
-      .where(
-        and(
-          gt(messagesSchema.id, messageExists.id),
-          eq(messagesSchema.chatId, message.chatId),
-        ),
-      )
-      .execute();
-  }
+  // For non-authenticated users, storage will be handled client-side
+  // The client will receive a 'clientStorage' event and handle it
 };
 
 export const POST = async (req: Request) => {
   try {
     const body = (await req.json()) as Body;
     const { message } = body;
+
+    // Check if user is authenticated
+    const isUserAuthenticated = await isAuthenticated();
 
     if (message.content === '') {
       return Response.json(
@@ -287,8 +321,31 @@ export const POST = async (req: Request) => {
     const writer = responseStream.writable.getWriter();
     const encoder = new TextEncoder();
 
-    handleEmitterEvents(stream, writer, encoder, aiMessageId, message.chatId);
-    handleHistorySave(message, humanMessageId, body.focusMode, body.files);
+    // Create the user message object
+    const userMessage = {
+      messageId: humanMessageId,
+      chatId: message.chatId,
+      content: message.content,
+      role: 'user' as const,
+      createdAt: new Date()
+    };
+
+    // For non-authenticated users, send a message to store on client side
+    if (!isUserAuthenticated) {
+      writer.write(
+        encoder.encode(
+          JSON.stringify({
+            type: 'clientStorage',
+            message: userMessage,
+            focusMode: body.focusMode,
+            files: body.files,
+          }) + '\n',
+        ),
+      );
+    }
+
+    handleEmitterEvents(stream, writer, encoder, aiMessageId, message.chatId, isUserAuthenticated, body.focusMode);
+    handleHistorySave(message, humanMessageId, body.focusMode, body.files, isUserAuthenticated);
 
     return new Response(responseStream.readable, {
       headers: {
